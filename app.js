@@ -32,9 +32,11 @@ app.use('/', index);
 
 app.use('/users', users);
 app.use('/posts', posts);
+logger("nu sa gasit path-ul");
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+    logger("nu sa gasit path-ul");
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
