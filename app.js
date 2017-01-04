@@ -9,8 +9,11 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var posts = require('./routes/route-posts');
 var mongoose = require('mongoose');
+var passport = require('passport');
 require('./app/models/model-comments');
 require('./app/models/model-posts');
+require('./app/models/model-user');
+require('./config/passport');
 mongoose.connect('mongodb://localhost:27017/news');
 
 var app = express();
@@ -27,9 +30,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(passport.initialize());
 app.use('/', index);
-
-
 app.use('/users', users);
 app.use('/posts', posts);
 logger("nu sa gasit path-ul");

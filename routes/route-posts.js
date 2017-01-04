@@ -8,7 +8,9 @@ var mongoose = require('mongoose');
 require('../app/models/model-comments');
 require('../app/models/model-posts');
 var Post = mongoose.model('Post');
+var jwt = require('express-jwt');
 var Comment = mongoose.model('Comment');
+var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 router.param('post', function(req, res, next, id) {
     var query = Post.findById(id);
 
@@ -42,17 +44,17 @@ router.param('com', function(req, res, next, id) {
 /*router.get('/:post', function(req, res) {
     res.json(req.post);
 });*/
-router.get('/', function(req, res, next) {
+router.get('/',auth, function(req, res, next) {
     Post.find(function(err, posts){
         if(err){ return next(err); }
 
         res.json(posts);
     });
 });
-router.post('/:post/comments', function(req, res, next) {
+router.post('/:post/comments',auth, function(req, res, next) {
     var comment = new Comment(req.body);
     comment.post = req.post;
-
+    comment.author = req.payload.username;
     comment.save(function(err, comment){
         if(err){ return next(err); }
 
@@ -74,21 +76,21 @@ router.get('/:post', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
     var post = new Post(req.body);
-
+    post.author = req.payload.username;
     post.save(function(err, post){
         if(err){ return next(err); }
 
         res.json(post);
     });
 });
-router.put('/:post/comments/:com/upvote', function(req, res, next) {
+router.put('/:post/comments/:com/upvote',auth, function(req, res, next) {
     req.comment.upvote(function(err, comment){
         if (err) { return next(err); }
 
         res.json(comment);
     });
 });
-router.put('/:post/upvote', function(req, res, next) {
+router.put('/:post/upvote',auth, function(req, res, next) {
     req.post.upvote(function(err, post){
         if (err) { return next(err); }
 
