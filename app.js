@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
 app.use('/', index);
-app.use('/users', users);
+app.use('/user', users);
 app.use('/posts', posts);
 logger("nu sa gasit path-ul");
 

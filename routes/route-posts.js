@@ -1,7 +1,6 @@
 /**
  * Created by imacovei on 1/2/2017.
  */
-
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -44,7 +43,7 @@ router.param('com', function(req, res, next, id) {
 /*router.get('/:post', function(req, res) {
     res.json(req.post);
 });*/
-router.get('/',auth, function(req, res, next) {
+router.get('/', function(req, res, next) {
     Post.find(function(err, posts){
         if(err){ return next(err); }
 
@@ -74,7 +73,7 @@ router.get('/:post', function(req, res, next) {
     });
 });
 
-router.post('/', function(req, res, next) {
+router.post('/',auth, function(req, res, next) {
     var post = new Post(req.body);
     post.author = req.payload.username;
     post.save(function(err, post){
