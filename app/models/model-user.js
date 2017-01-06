@@ -4,6 +4,7 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
+var randomstring = require("randomstring");
 var UserSchema = new mongoose.Schema({
     username: {type: String, lowercase: true, unique: true},
     hash: String,
@@ -25,10 +26,11 @@ UserSchema.methods.generateJWT = function () {
     var today = new Date();
     var exp = new Date(today);
     exp.setDate(today.getDate() + 60);
-
+     var random= randomstring.generate(10)
     return jwt.sign({
         _id: this._id,
         username: this.username,
+        jti: random,
         exp: parseInt(exp.getTime() / 1000),
     }, 'SECRET');
 };

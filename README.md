@@ -1,1 +1,1 @@
-##fplapper
+##fplapper-news api
